@@ -26,8 +26,11 @@ def proof_of_work(last_proof):
     print("Searching for next proof")
     proof = 1
     last_hash = hashlib.sha256((str(last_proof)).encode()).hexdigest()
+    print(f"last hash: {last_hash}")
+    print(f"last 6 digits: {last_hash[-6:]}")
+
     while not valid_proof(last_hash, proof):
-        proof *= 5
+        proof += 16
 
     print("Proof found: " + str(proof) + " in " + str(timer() - start))
     return proof
@@ -42,7 +45,7 @@ def valid_proof(last_hash, proof):
     """
 
     new_hash = hashlib.sha256((str(proof)).encode()).hexdigest()
-    return last_hash[:-6] == new_hash[:6]
+    return last_hash[-6:] == new_hash[:6]
 
 
 if __name__ == '__main__':
